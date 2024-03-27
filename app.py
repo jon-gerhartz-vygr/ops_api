@@ -29,6 +29,9 @@ def request_user_update():
         user_id = request.args.get('user_id')
         data = request.get_json()
         resp = update_user(user_id, data)
+        print(resp.request.url)
+        print(resp.request.body)
+        print(resp.request.headers)
         if resp['status'] == 'complete':
             status_code = 200
         else:
