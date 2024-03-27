@@ -3,6 +3,7 @@ from crud import update_user
 from dotenv import load_dotenv
 from flask import Flask, request, redirect, jsonify, url_for, make_response
 import os
+from utils import get_public_ip
 
 load_dotenv()
 
@@ -12,6 +13,9 @@ FLASK_SECRET_KEY = os.getenv("FLASK_SECRET_KEY")
 
 app = Flask(__name__)
 app.secret_key = FLASK_SECRET_KEY
+
+ip = get_public_ip()
+print(ip)
 
 
 @app.route('/update_user', methods=['POST'])
