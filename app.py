@@ -21,9 +21,10 @@ print(ip)
 @app.route('/update_user', methods=['POST'])
 def request_user_update():
     api_key = request.headers.get('Authorization').split()[1]
+    resp = {}
     if not verify_key(api_key):
         status_code = 404
-        message = 'Unauthorized'
+        resp['message'] = 'Unauthorized'
     else:
         user_id = request.args.get('user_id')
         data = request.get_json()
