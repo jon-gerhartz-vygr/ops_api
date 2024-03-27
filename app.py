@@ -21,6 +21,9 @@ print(ip)
 @app.route('/update_user', methods=['POST'])
 def request_user_update():
     api_key = request.headers.get('Authorization').split()[1]
+    print(request.url)
+    print(request.data)
+    print(request.headers)
     resp = {}
     if not verify_key(api_key):
         status_code = 404
@@ -29,9 +32,6 @@ def request_user_update():
         user_id = request.args.get('user_id')
         data = request.get_json()
         resp = update_user(user_id, data)
-        print(resp.request.url)
-        print(resp.request.body)
-        print(resp.request.headers)
         if resp['status'] == 'complete':
             status_code = 200
         else:
