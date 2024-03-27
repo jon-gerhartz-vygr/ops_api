@@ -7,3 +7,4 @@ snowflake_connector_python==3.7.1
 snowflake_sqlalchemy==1.5.1
 SQLAlchemy==1.4.52
 snowflake-connector-python[pandas]
+gunicorn
