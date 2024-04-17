@@ -39,7 +39,8 @@ Python
 import requests
 
 user_id = 123456
-url = f'https://opsapi-production.up.railway.app/update_user?user_id={user_id}'
+base_url = ''
+url = f'{base_url}/update_user?user_id={user_id}'
 
 api_key = '123456789'
 headers = {
