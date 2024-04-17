@@ -34,7 +34,28 @@ WHERE id = '{user_id}'
 """
 
 q_get_user = """
-SELECT *
+SELECT 
+    id
+    , type
+    , email
+    , first_name
+    , last_name
+    , coalesce(address1, '') as address1
+    , coalesce(address2, '') as address2
+    , coalesce(city, '') as city
+    , coalesce(state, '') as state
+    , coalesce(zip, '') as zip
+    , phone_country_code
+    , phone
+    , ssn
+    , dob
+    , address_updated_ts
+    , email_updated_ts
+    , name_updated_ts
+    , country_code
+    , is_foreign
+    , can_log_in
+    , has_claim
 FROM LIQUIDATION_TRUST.SRC.USERS
 WHERE id = '{user_id}'
 """

@@ -68,7 +68,7 @@ def update_user(user_id, data):
         message = f'{user_id} successfully updated'
     except Exception as e:
         error_message = str(e)
-        message = f'failed to make update: {error_message}'
+        message = f'{user_id} failed to make update: {error_message}'
         status = 'error'
 
     resp = {'status': status, 'message': message}

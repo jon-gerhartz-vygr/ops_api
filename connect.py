@@ -6,10 +6,6 @@ from dotenv import load_dotenv
 import os
 import pandas as pd
 import snowflake.connector
-from snowflake.sqlalchemy import URL
-from sqlalchemy import create_engine, text
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.exc import DBAPIError
 
 
 load_dotenv()
