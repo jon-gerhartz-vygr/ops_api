@@ -1,5 +1,7 @@
 from connect import execute_query, fetch_pandas
 from queries import *
+from utils import write_log
+
 
 allowed_keys = {'EMAIL', 'FIRST_NAME', 'LAST_NAME', 'ADDRESS1', 'ADDRESS2', 'CITY',
                 'STATE', 'ZIP', 'PHONE_COUNTRY_CODE', 'PHONE', 'COUNTRY_CODE', 'IS_FOREIGN', 'HAS_CLAIM'}
@@ -70,6 +72,7 @@ def update_user(user_id, data):
         error_message = str(e)
         message = f'{user_id} failed to make update: {error_message}'
         status = 'error'
+        write_log('ERROR', user_id, 'VYGR_USER_ID', message, data)
 
     resp = {'status': status, 'message': message}
     return resp

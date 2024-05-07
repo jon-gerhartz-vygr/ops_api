@@ -34,9 +34,11 @@ def request_user_update():
         update_resp = update_user(user_id, data)
         if update_resp['status'] == 'complete':
             status_code = 200
-            resp['message'] = update_resp['message']
+
         else:
             status_code = 500
+
+        resp['message'] = update_resp['message']
     print(resp)
     return make_response(jsonify(resp['message']), status_code)
 
