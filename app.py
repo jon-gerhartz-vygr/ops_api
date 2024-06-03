@@ -1,5 +1,5 @@
 from auth import verify_key
-from crud import update_user
+from crud import update_user, handle_reissue_request
 from dotenv import load_dotenv
 from flask import Flask, request, redirect, jsonify, url_for, make_response
 import os
@@ -32,6 +32,31 @@ def request_user_update():
     else:
         data = request.get_json()
         update_resp = update_user(user_id, data)
+        if update_resp['status'] == 'complete':
+            status_code = 200
+
+        else:
+            status_code = 500
+
+        resp['message'] = update_resp['message']
+    print(resp)
+    return make_response(jsonify(resp['message']), status_code)
+
+
+@app.route('/request_reissue', methods=['POST'])
+def request_reissue():
+    api_key = request.headers.get('Authorization').split()[1]
+    user_id = request.args.get('user_id')
+    resp = {}
+    if not verify_key(api_key):
+        status_code = 404
+        resp['message'] = 'Unauthorized'
+    elif not user_id:
+        resp['message'] = 'Missing required parameter: user_id'
+        status_code = 422
+    else:
+        data = request.get_json()
+        update_resp = handle_reissue_request(user_id, data)
         if update_resp['status'] == 'complete':
             status_code = 200
 

@@ -76,3 +76,35 @@ def update_user(user_id, data):
 
     resp = {'status': status, 'message': message}
     return resp
+
+
+def handle_reissue_request(user_id, data):
+    distribution_name = data['distribution_name']
+    formatted_get_eligible_check = q_get_eligible_check.format(
+        user_id=user_id, distribution_name=distribution_name)
+    try:
+        resissue_check_df = fetch_pandas(formatted_get_eligible_check)
+        assert len(resissue_check_df) > 0, 'No eligible checks found'
+
+        check_amount = resissue_check_df['CHECK_AMOUNT'][0]
+        check_number = resissue_check_df['CHECK_NUMBER'][0]
+
+        if check_amount > 20000:
+            internal_status = 'REISSUE_REQUESTED'
+        else:
+            internal_status = 'REISSUE_APPROVED'
+
+        formatted_q_update_internal_status = q_update_internal_status.format(
+            internal_status=internal_status, check_number=check_number)
+        execute_query(formatted_q_update_internal_status)
+
+        status = 'complete'
+        message = f'{check_number} successfully updated to {internal_status}'
+    except Exception as e:
+        error_message = str(e)
+        message = f'{user_id} failed to process reissue request: {error_message}'
+        status = 'error'
+        write_log('ERROR', user_id, 'VYGR_USER_ID', message, data)
+
+    resp = {'status': status, 'message': message}
+    return resp

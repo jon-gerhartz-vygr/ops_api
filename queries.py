@@ -59,3 +59,23 @@ SELECT
 FROM LIQUIDATION_TRUST.SRC.USERS
 WHERE id = '{user_id}'
 """
+
+# queries for reissue requests api
+q_get_eligible_check = """
+SELECT usd.*
+FROM LIQUIDATION_TRUST.SRC.USD_DISTRIBUTIONS usd
+JOIN LIQUIDATION_TRUST.SRC.USER_CLAIM uc on uc.claim_number = usd.claim_number
+JOIN LIQUIDATION_TRUST.SRC.USERS u on u.id = uc.user_id
+WHERE
+    u.id = '{user_id}'
+    and usd.distribution_name = '{distribution_name}'
+    and (usd.bank_status = 'UNCASHED' OR (usd.bank_status = 'VOID' and usd.mail_status = 'UNDELIVERABLE'))
+    and usd.internal_status = 'ISSUED'
+QUALIFY rank() over (partition by usd.claim_number order by check_date desc) = 1;
+"""
+
+q_update_internal_status = """
+UPDATE LIQUIDATION_TRUST.SRC.USD_DISTRIBUTIONS
+SET internal_status = '{internal_status}', internal_status_updated_ts = current_timestamp
+WHERE check_number = '{check_number}'
+"""
