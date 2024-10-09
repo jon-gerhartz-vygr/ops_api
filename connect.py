@@ -4,7 +4,6 @@ from cryptography.hazmat.primitives.asymmetric import dsa
 from cryptography.hazmat.primitives import serialization
 from dotenv import load_dotenv
 import os
-import pandas as pd
 import snowflake.connector
 
 
