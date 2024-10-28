@@ -89,10 +89,7 @@ def handle_reissue_request(user_id, data):
         check_amount = resissue_check_df['CHECK_AMOUNT'][0]
         check_number = resissue_check_df['CHECK_NUMBER'][0]
 
-        if check_amount > 20000:
-            internal_status = 'REISSUE_REQUESTED'
-        else:
-            internal_status = 'REISSUE_APPROVED'
+        internal_status = 'REISSUE_APPROVED'
 
         formatted_q_update_internal_status = q_update_internal_status.format(
             internal_status=internal_status, check_number=check_number)
